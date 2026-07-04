@@ -6,7 +6,7 @@ import pandas as pd
 from lighting_assessment.evaluator import LightingEvaluator
 
 
-IMAGE_FOLDER = "SGLVD_v1"
+IMAGE_FOLDER = "lighting_test"
 OUTPUT_FOLDER = "results"
 OUTPUT_FILE = "lighting_scores_detailed_results.csv"
 
