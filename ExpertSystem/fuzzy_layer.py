@@ -1,8 +1,8 @@
 def trapmf(x: float, a: float, b: float, c: float, d: float) -> float:
     eps = 1e-9
-    rising  = (x - a) / (b - a + eps)
-    falling = (d - x) / (d - c + eps)
-    return max(0.0, min(1.0, rising, falling))
+    rising = 1.0 if x >= b else max(0.0, (x - a) / (b - a + eps))
+    falling = 1.0 if x <= c else max(0.0, (d - x) / (d - c + eps))
+    return min(1.0, rising, falling)
 
 MF_PARAMS = {
     "low":    (0,   0, 25, 45),
