@@ -23,7 +23,7 @@ def load_rows(csv_path: str):
         return list(csv.DictReader(f))
 
 
-def run_one_image(row: dict) -> list:
+def run_one_image(row: dict) :
     """Declares Score facts only for criteria that HAVE a value; missing
     ones are simply never declared, which is what makes the
     NOT(Score(name=...)) undetected-rules fire."""
@@ -38,24 +38,27 @@ def run_one_image(row: dict) -> list:
 
     engine.run()
 
-    return [f for f in engine.facts.values() if isinstance(f, Quality)]
-
-
+    quality_facts = [f for f in engine.facts.values() if isinstance(f, Quality)]
+    explanation_facts = [f for f in engine.facts.values() if isinstance(f, Explanation)]
+    return quality_facts, explanation_facts
 def run_all(csv_path: str):
     results = []
     for row in load_rows(csv_path):
         image = row["image"]
-        quality_facts = run_one_image(row)
-        # There should normally be exactly one Quality fact per image
-        # (guarded by NOT(Quality()) everywhere); take the first defensively.
+        quality_facts, explanation_facts = run_one_image(row)   # ← فك التوبل صح
         quality = quality_facts[0] if quality_facts else None
-        results.append((image, quality))
+        reasons = [e["reason"] for e in explanation_facts]
+        results.append((image, quality, reasons))
     return results
 
 
 if __name__ == "__main__":
-    for image, quality in run_all("C:/Users/XPRISTO/Desktop/Four/KPS/project/ImageEvaluationProject/Results/final_scores.csv"):
+    for image, quality, reasons in run_all(               # ← ثلاث عناصر مو اثنين
+        "C:/Users/XPRISTO/Desktop/Four/KPS/project/ImageEvaluationProject/Results/final_scores.csv"
+    ):
         if quality is None:
             print(f"{image}: NO QUALITY FACT PRODUCED (check rule coverage)")
         else:
             print(f"{image}: label={quality['label']:6s} value={quality['value']:.2f}")
+        for reason in reasons:
+            print(f"    reason: {reason}")
