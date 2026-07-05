@@ -1,13 +1,9 @@
-
+import _compat_patch  # noqa: F401  (لازم قبل أي شي تاني)
+from experta import KnowledgeEngine
 import csv
 from experta import KnowledgeEngine
 from Facts import Score, Quality, Explanation
 from EngineInference import EngineRules
-
-class ImageQualityEngine(EngineRules):
-
-    pass
-
 
 CSV_COLUMN_TO_CRITERION = {
     "lighting_score": "lighting",
@@ -31,7 +27,7 @@ def run_one_image(row: dict) -> list:
     """Declares Score facts only for criteria that HAVE a value; missing
     ones are simply never declared, which is what makes the
     NOT(Score(name=...)) undetected-rules fire."""
-    engine = ImageQualityEngine()
+    engine = EngineRules()
     engine.reset()
 
     for column, criterion in CSV_COLUMN_TO_CRITERION.items():
@@ -58,7 +54,7 @@ def run_all(csv_path: str):
 
 
 if __name__ == "__main__":
-    for image, quality in run_all("/mnt/user-data/uploads/final_scores.csv"):
+    for image, quality in run_all("C:/Users/XPRISTO/Desktop/Four/KPS/project/ImageEvaluationProject/Results/final_scores.csv"):
         if quality is None:
             print(f"{image}: NO QUALITY FACT PRODUCED (check rule coverage)")
         else:

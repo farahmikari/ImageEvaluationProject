@@ -1,3 +1,5 @@
+import _compat_patch  # noqa: F401  (لازم قبل أي شي تاني)
+from experta import KnowledgeEngine
 from experta import *
 
 #الدرجة الابتدائية الخاصة بكل معيار
