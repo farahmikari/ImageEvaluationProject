@@ -27,3 +27,8 @@ class Quality(Fact):
 class Explanation(Fact):
     rule_name = Field(str, mandatory=True)
     reason    = Field(str, mandatory=True)
+
+#لتحول اللفظ اللغوي الى سكور نهائي ن
+class QualityCandidate(Fact):
+    value = Field(float, mandatory=True)
+    source = Field(str, mandatory=True)  # which rule/scenario produced it
