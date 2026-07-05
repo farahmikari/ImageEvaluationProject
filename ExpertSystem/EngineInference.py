@@ -4,7 +4,7 @@ from experta import *
 from Facts import *
 from fuzzy_layer import compute_memberships
 from defuzzification import final_quality_value
-
+ZERO_DEGS = {"low": 0.0, "medium": 0.0, "high": 0.0}
 class EngineRules(KnowledgeEngine):
 
 # -----Fact Initial---------------------------------------------------------------------------------------------
@@ -1741,9 +1741,6 @@ class EngineRules(KnowledgeEngine):
 
 
 #----------------------------------------------------------------------------------
-ZERO_DEGS = {"low": 0.0, "medium": 0.0, "high": 0.0}
-#حالات خاصة ناتجة عن السكور الأساسي
-class UndetectedCasesRules(KnowledgeEngine):
     @Rule(NOT(Score(name="pose")),NOT(Label(name="pose")),salience=250,)
     def pose_undetected(self):
         self.declare(Label(name="pose", label="undetected", degree=1.0))
