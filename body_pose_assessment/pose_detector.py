@@ -54,15 +54,10 @@ class PoseDetector:
         for i, name in enumerate(self.keypoint_names):
 
             keypoints[name] = {
-
                 "x": float(xy[i][0]),
-
                 "y": float(xy[i][1]),
-
                 "confidence": float(conf[i])
-
             }
-
         return keypoints
 
     def draw_keypoints(self,results, output_path):

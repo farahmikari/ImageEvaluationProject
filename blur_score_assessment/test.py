@@ -119,7 +119,7 @@ def predict_blur_score(model: nn.Module, img_path: str, debug: bool = False) -> 
         print("  crop_detail:", np.round(detail, 2))
         print("  crop_weights:", np.round(weights, 3))
 
-    return score_01 * 100.0, confidence, len(crops)
+    return 100-(score_01 * 100.0), confidence, len(crops)
 
 
 def interpret_score(score: float, confidence: float) -> str:

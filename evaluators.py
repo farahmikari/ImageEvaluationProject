@@ -20,7 +20,7 @@ blur_model = load_model()
 def evaluate_blur(image_path):
     score, confidence, _ = predict_blur_score(blur_model, image_path)
     return {
-        "blur_score": score,
+        "clarity_score": score,
     }
 
 def evaluate_lighting(image_path):
