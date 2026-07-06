@@ -12,8 +12,8 @@ test_images، ثم تحليل كل صورة وعرض النتائج.
 import os
 import cv2
 
-from face_mesh_detector import FaceMeshDetector, NoFaceDetectedError
-from ear_calculator import analyze_eye, average_ear
+from .face_mesh_detector import FaceMeshDetector, NoFaceDetectedError
+from .ear_calculator import analyze_eye, average_ear
 
 
 SUPPORTED_EXTENSIONS = (".jpg", ".jpeg", ".png", ".bmp", ".webp")

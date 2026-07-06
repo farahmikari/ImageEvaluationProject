@@ -1,7 +1,7 @@
 from pathlib import Path
-from pose_detector import PoseDetector
-from feature_extractor import FeatureExtractor
-from feature_normalizer import FeatureNormalizer
+from .pose_detector import PoseDetector
+from .feature_extractor import FeatureExtractor
+from .feature_normalizer import FeatureNormalizer
 from pprint import pprint
 
 detector=PoseDetector()

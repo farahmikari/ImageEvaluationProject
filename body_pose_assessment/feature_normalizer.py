@@ -1,5 +1,5 @@
-from utils import *
-from config import *
+from .utils import *
+from .config import *
 class FeatureNormalizer:
     def __init__(self):
         pass
@@ -27,9 +27,9 @@ class FeatureNormalizer:
      total_weight = 0
      weighted_sum = 0
      for result, weight in scores:
-        if result["score"] is None:
+        if result["pose_score"] is None:
             continue
-        weighted_sum += result["score"] * weight
+        weighted_sum += result["pose_score"] * weight
         total_weight += weight
      if total_weight == 0:
         return normalize_result(

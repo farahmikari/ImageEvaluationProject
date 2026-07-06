@@ -1,7 +1,7 @@
-from lighting_assessment.metrics import extract_lighting_metrics
-from lighting_assessment.scoring import calculate_final_lighting_score
-from lighting_assessment.subject_detector import SubjectDetector
-from lighting_assessment.roi import create_face_skin_mask
+from .metrics import extract_lighting_metrics
+from .scoring import calculate_final_lighting_score
+from .subject_detector import SubjectDetector
+from .roi import create_face_skin_mask
 
 
 class LightingEvaluator:

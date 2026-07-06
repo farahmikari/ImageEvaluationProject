@@ -18,14 +18,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 
-from config import (
-    LEFT_EYE_LANDMARKS,
-    RIGHT_EYE_LANDMARKS,
-    MAX_NUM_FACES,
-    STATIC_IMAGE_MODE,
-    MIN_DETECTION_CONFIDENCE,
-    REFINE_LANDMARKS,
-)
+from eyes_score_assessment.config import *
 
 
 @dataclass
@@ -93,7 +86,7 @@ class FaceMeshDetector:
 
         if not results.multi_face_landmarks:
             raise NoFaceDetectedError(
-                "لم يتم اكتشاف أي وجه في الصورة المُدخلة."
+                "No Face Detected"
             )
 
         # نأخذ أول وجه مكتشف فقط (المشروع مصمم لصورة تحتوي وجهًا واحدًا)

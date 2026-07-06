@@ -1,12 +1,13 @@
 import os
+from pathlib import Path
 import time
 import cv2
 import pandas as pd
 
-from lighting_assessment.evaluator import LightingEvaluator
+from evaluator import LightingEvaluator
 
 IMAGE_FOLDER = "lighting_assessment/SGLVD_v1"
-OUTPUT_FOLDER = "results"
+OUTPUT_FOLDER = "lighting_assessment/results"
 OUTPUT_FILE = "lighting_scores_detailed_results.csv"
 
 SUPPORTED_EXTENSIONS = (

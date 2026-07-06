@@ -1,5 +1,5 @@
 from enum import Enum
-from config import *
+from .config import *
 import math
 def normalize(value, best, worst):
     if value is None:
@@ -104,6 +104,5 @@ def weighted_average(values):
 
 def normalize_result(score,valid=True,confidence=None, reason=EvaluationReason.OK):
     return {
-        "score": score,
-        "reason": reason
+        "pose_score": score
     }

@@ -15,8 +15,8 @@ from typing import List, Tuple
 
 import numpy as np
 
-from config import EAR_MIN, EAR_MAX
-from face_mesh_detector import EyeLandmarks
+from .config import *
+from .face_mesh_detector import EyeLandmarks
 
 
 @dataclass
