@@ -1,14 +1,3 @@
-"""
-main.py
---------
-مسؤولية هذا الملف:
-تنسيق عمل بقية المكونات، وقراءة جميع الصور الموجودة داخل مجلد
-test_images، ثم تحليل كل صورة وعرض النتائج.
-
-لا يحتوي هذا الملف أي منطق خاص بـ MediaPipe أو EAR،
-بل يستدعي الوحدات الأخرى فقط.
-"""
-
 import os
 import cv2
 
@@ -20,23 +9,17 @@ SUPPORTED_EXTENSIONS = (".jpg", ".jpeg", ".png", ".bmp", ".webp")
 
 
 def load_image(image_path: str):
-    """
-    قراءة صورة باستخدام OpenCV.
-    """
     image = cv2.imread(image_path)
 
     if image is None:
         raise FileNotFoundError(
-            f"تعذر قراءة الصورة: {image_path}"
+            f"can't read image : {image_path}"
         )
 
     return image
 
 
 def print_result(label: str, ear_value: float, percentage: float):
-    """
-    طباعة نتيجة عين واحدة.
-    """
     print(f"{label}:")
     print(f"  EAR = {ear_value:.4f}")
     print(f"eye opening percentage = {percentage:.2f}%")
@@ -44,14 +27,8 @@ def print_result(label: str, ear_value: float, percentage: float):
 
 
 def run(image_path: str):
-    """
-    تحليل صورة واحدة.
-    """
-
     image = load_image(image_path)
-
     detector = FaceMeshDetector()
-
     try:
         left_eye, right_eye = detector.detect_eyes(image)
 
@@ -82,7 +59,7 @@ def run(image_path: str):
         )
 
     except NoFaceDetectedError:
-        print(f"{os.path.basename(image_path)} : لم يتم اكتشاف أي وجه.")
+        print(f"{os.path.basename(image_path)} : can't detect face")
 
     finally:
         detector.close()

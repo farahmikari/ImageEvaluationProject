@@ -54,11 +54,12 @@ def run_all(csv_path: str):
 
 if __name__ == "__main__":
     for image, quality, reasons in run_all(               # ← ثلاث عناصر مو اثنين
-        "C:/Users/XPRISTO/Desktop/Four/KPS/project/ImageEvaluationProject/Results/final_scores.csv"
+        "Results/final_scores.csv"
     ):
+        print("-" * 60)
         if quality is None:
             print(f"{image}: NO QUALITY FACT PRODUCED (check rule coverage)")
         else:
             print(f"{image}: label={quality['label']:6s} value={quality['value']:.2f}")
         for reason in reasons:
-            print(f"    reason: {reason}")
+            print(f"reason: {reason}")
