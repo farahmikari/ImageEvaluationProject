@@ -1,3 +1,7 @@
 {
+<<<<<<< HEAD
     "python-envs.defaultEnvManager": "ms-python.python:venv"
+=======
+    "python-envs.defaultEnvManager": "ms-python.python:system"
+>>>>>>> 6ef010b5a124702754c67fd2b8acb6c46c02a33f
 }

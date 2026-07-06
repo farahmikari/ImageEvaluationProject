@@ -14,6 +14,7 @@ CROP_SIZE = 256
 INPUT_SIZE = 224
 DROPOUT = 0.3
 MODEL_PATH = "./blur_score__assessment/best_blur_model_efficientnet.pth"
+
 DETAIL_WEIGHT_POWER = 0.25
 MIN_DETAIL_WEIGHT = 1e-3
 
