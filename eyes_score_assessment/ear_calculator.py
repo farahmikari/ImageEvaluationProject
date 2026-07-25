@@ -3,8 +3,8 @@ from typing import List, Tuple
 
 import numpy as np
 
-from .config import *
-from .face_mesh_detector import EyeLandmarks
+from eyes_score_assessment.ear_config import EAR_MIN, EAR_MAX
+from eyes_score_assessment.face_landmark_extractor import EyeLandmarks
 
 
 @dataclass
@@ -48,3 +48,44 @@ def average_ear(left_eye_result: EyeOpennessResult, right_eye_result: EyeOpennes
     avg_ear = (left_eye_result.ear_value + right_eye_result.ear_value) / 2.0
     avg_percentage = (left_eye_result.openness_percentage + right_eye_result.openness_percentage) / 2.0
     return EyeOpennessResult(ear_value=avg_ear, openness_percentage=avg_percentage)
+
+
+def calculate_image_score(per_face_results: List[EyeOpennessResult]) -> EyeOpennessResult:
+    """
+    Combines the per-face average EyeOpennessResult (one per detected
+    face in the image, i.e. the output of average_ear() for each face)
+    into a single overall score for the WHOLE IMAGE.
+
+    Uses a plain average across faces:
+      - All faces with closed eyes -> low overall score.
+      - One face open among several closed -> score nudges up somewhat,
+        but stays weighted down by the closed-eye faces.
+      - All faces open -> high overall score.
+
+    This matches the intended behavior: no single face dominates the
+    result, but each closed-eye face pulls the overall score down
+    proportionally to how many faces are in the photo.
+    """
+    if not per_face_results:
+        raise ValueError("calculate_image_score requires at least one face result")
+
+    avg_ear = float(np.mean([result.ear_value for result in per_face_results]))
+    avg_percentage = float(np.mean([result.openness_percentage for result in per_face_results]))
+
+    return EyeOpennessResult(ear_value=avg_ear, openness_percentage=avg_percentage)
+
+
+def describe_image_score(openness_percentage: float) -> str:
+    """
+    Simple qualitative label for the final image score, for readability
+    in the printed output. Thresholds are illustrative and can be
+    tuned freely without affecting the underlying score calculation.
+    """
+    if openness_percentage >= 75:
+        return "excellent - eyes open"
+    elif openness_percentage >= 50:
+        return "good"
+    elif openness_percentage >= 25:
+        return "fair - some eyes closed"
+    else:
+        return "poor - eyes mostly closed"
