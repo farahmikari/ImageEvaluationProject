@@ -1,8 +1,13 @@
 import os
 import cv2
 
-from .face_mesh_detector import FaceMeshDetector, NoFaceDetectedError
-from .ear_calculator import analyze_eye, average_ear
+from eyes_score_assessment.face_pipeline import FaceMeshDetector, NoFaceDetectedError
+from eyes_score_assessment.ear_calculator import (
+    analyze_eye,
+    average_ear,
+    calculate_image_score,
+    describe_image_score,
+)
 
 
 SUPPORTED_EXTENSIONS = (".jpg", ".jpeg", ".png", ".bmp", ".webp")
@@ -30,33 +35,51 @@ def run(image_path: str):
     image = load_image(image_path)
     detector = FaceMeshDetector()
     try:
-        left_eye, right_eye = detector.detect_eyes(image)
-
-        left_result = analyze_eye(left_eye)
-        right_result = analyze_eye(right_eye)
-        overall_result = average_ear(left_result, right_result)
+        all_faces_eyes = detector.detect_eyes(image)
 
         print("=" * 50)
         print(f"the image: {os.path.basename(image_path)}")
+        print(f"faces detected: {len(all_faces_eyes)}")
         print("=" * 50)
 
-        print_result(
-            "left eye",
-            left_result.ear_value,
-            left_result.openness_percentage,
-        )
+        per_face_overall_results = []
 
-        print_result(
-            "right eye",
-            right_result.ear_value,
-            right_result.openness_percentage,
-        )
+        for face_index, (left_eye, right_eye) in enumerate(all_faces_eyes, start=1):
+            left_result = analyze_eye(left_eye)
+            right_result = analyze_eye(right_eye)
+            overall_result = average_ear(left_result, right_result)
+            per_face_overall_results.append(overall_result)
 
-        print_result(
-            "average for left and right",
-            overall_result.ear_value,
-            overall_result.openness_percentage,
-        )
+            print(f"--- face {face_index} ---")
+
+            print_result(
+                "left eye",
+                left_result.ear_value,
+                left_result.openness_percentage,
+            )
+
+            print_result(
+                "right eye",
+                right_result.ear_value,
+                right_result.openness_percentage,
+            )
+
+            print_result(
+                "average for left and right",
+                overall_result.ear_value,
+                overall_result.openness_percentage,
+            )
+
+        image_score = calculate_image_score(per_face_overall_results)
+        score_label = describe_image_score(image_score.openness_percentage)
+
+        print("=" * 50)
+        print("FINAL IMAGE SCORE (all faces combined)")
+        print(f"  EAR = {image_score.ear_value:.4f}")
+        print(f"  eye opening percentage = {image_score.openness_percentage:.2f}%")
+        print(f"  rating = {score_label}")
+        print("=" * 50)
+        print()
 
     except NoFaceDetectedError:
         print(f"{os.path.basename(image_path)} : can't detect face")
