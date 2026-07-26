@@ -12,8 +12,3 @@ MF_PARAMS = {
 def compute_memberships(value: float) -> dict:
     x = max(0.0, min(100.0, value))
     return {label: round(trapmf(x, *params), 4) for label, params in MF_PARAMS.items()}
-## return  {
-  #  "low":0.0,
-  #  "medium":0.47,
-  #  "high":0.65
-#}
