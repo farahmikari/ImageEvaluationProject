@@ -54,7 +54,7 @@ def run_all(csv_path: str):
 
 if __name__ == "__main__":
     for image, quality, reasons in run_all(               # ← ثلاث عناصر مو اثنين
-        "Results/final_scores.csv"
+        "C:/Users/XPRISTO/Desktop/Four/KPS/project/ImageEvaluationProject/Results/final_scores.csv"
     ):
         print("-" * 60)
         if quality is None:

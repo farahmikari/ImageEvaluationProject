@@ -1,7 +1,12 @@
 from blur_score_assessment.test import load_model, predict_blur_score
-from eyes_score_assessment.face_mesh_detector import FaceMeshDetector, NoFaceDetectedError
+from eyes_score_assessment.face_pipeline import FaceMeshDetector, NoFaceDetectedError
 from blur_score_assessment.test import predict_blur_score
 from eyes_score_assessment.ear_calculator import analyze_eye, average_ear
+from eyes_score_assessment.ear_calculator import (
+    analyze_eye,
+    average_ear,
+    calculate_image_score,
+)
 from eyes_score_assessment.eye_main import load_image
 from lighting_assessment import evaluator
 from lighting_assessment.evaluator import LightingEvaluator
@@ -13,9 +18,10 @@ eye_detector = FaceMeshDetector()
 blur_model = load_model()
 
 def evaluate_blur(image_path):
-    score, confidence, _ = predict_blur_score(blur_model, image_path)
+    result = predict_blur_score(blur_model, image_path)
+
     return {
-        "clarity_score": score,
+        "clarity_score":round(100 - result["overall_score"],2)
     }
 
 def evaluate_lighting(image_path):
@@ -28,13 +34,21 @@ def evaluate_lighting(image_path):
 def evaluate_eyes(image_path):
     image = load_image(image_path)
     try:
-     left, right = eye_detector.detect_eyes(image)
-     left_r = analyze_eye(left)
-     right_r = analyze_eye(right)
-     overall = average_ear(left_r, right_r)
-     return {
-        "eye_score": overall.openness_percentage
-    }
+        all_faces_eyes = eye_detector.detect_eyes(image)
+
+        per_face_overall_results = []
+
+        for left_eye, right_eye in all_faces_eyes:
+            left_result = analyze_eye(left_eye)
+            right_result = analyze_eye(right_eye)
+            overall_result = average_ear(left_result, right_result)
+            per_face_overall_results.append(overall_result)
+
+        image_score = calculate_image_score(per_face_overall_results)
+
+        return {
+            "eye_score": round(image_score.openness_percentage,2)
+        }
     except NoFaceDetectedError:
         return {
             "eye_score": None

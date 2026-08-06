@@ -2,35 +2,34 @@ import _compat_patch  # noqa: F401  (لازم قبل أي شي تاني)
 from experta import KnowledgeEngine
 from experta import *
 
-#الدرجة الابتدائية الخاصة بكل معيار
 class Score(Fact):
-    name  = Field(str, mandatory=True)   # 'lighting' | 'blur' | 'pose' | 'eye_open'
+    name  = Field(str, mandatory=True)
     value = Field(float, mandatory=True)
 
-#تصنيفات الدرجة الموجودة
 class Membership(Fact):
     name   = Field(str, mandatory=True)
     low    = Field(float, mandatory=True)
     medium = Field(float, mandatory=True)
     high   = Field(float, mandatory=True)
 
-#  قيمة الانتماء الخاصة بكل فئة للتصنيفات
+class CriterionValue(Fact):
+    name = Field(str, mandatory=True)
+    value = Field(float, mandatory=True)
+    weight = Field(float, mandatory=True)
+
 class Label(Fact):
     name   = Field(str, mandatory=True)
-    label  = Field(str, mandatory=True)     # 'low' | 'medium' | 'high'
-    degree = Field(float, mandatory=True)   # its winning membership degree
+    label  = Field(str, mandatory=True)
+    value = Field(float, mandatory=True)
 
-# الدرجة النهائسة والدرجة الجودة المستحقة للصورة
 class Quality(Fact):
-    label = Field(str, mandatory=True)      # 'Low' | 'Medium' | 'High'
-    value = Field(float, mandatory=True)     # 0-100 representative score
+    label = Field(str, mandatory=True)
+    value = Field(float, mandatory=True)
 
-#تقديم سبب مقنع لدرجة النهائية
+class BaseScore(Fact):
+    value = Field(float, mandatory=True)
+
 class Explanation(Fact):
     rule_name = Field(str, mandatory=True)
     reason    = Field(str, mandatory=True)
 
-#لتحول اللفظ اللغوي الى سكور نهائي ن
-class QualityCandidate(Fact):
-    value = Field(float, mandatory=True)
-    source = Field(str, mandatory=True)  # which rule/scenario produced it
