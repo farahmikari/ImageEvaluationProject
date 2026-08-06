@@ -8,9 +8,7 @@ folder = "ImagesTest"
 rows = []
 
 for image_path in Path(folder).glob("*"):
-
     image_path = str(image_path)
-
     blur = evaluate_blur(image_path)
     lighting = evaluate_lighting(image_path)
     pose = evaluate_pose(image_path)
